@@ -17,8 +17,9 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'contest'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 2
     ENDOWMENT = 20
+    COST_PER_TICKET = 1
 
 
 class Subsession(BaseSubsession):
@@ -26,10 +27,14 @@ class Subsession(BaseSubsession):
 
     def setup(self):
         self.is_paid = (self.round_number == 1)
+        for group in self.get_groups():
+            group.setup()
 
 
 class Group(BaseGroup):
-    pass
+    def setup(self):
+        for player in self.get_players():
+            player.setup()
 
 
 class Player(BasePlayer):
@@ -39,6 +44,10 @@ class Player(BasePlayer):
     is_winner = models.BooleanField()
     earnings = models.IntegerField()
 
+
+    def setup(self):
+        self.endowment = C.ENDOWMENT
+        self.cost_per_ticket = C.COST_PER_TICKET
 
 def creating_session(subsession):
     subsession.setup()
@@ -50,11 +59,20 @@ class Intro(Page):
 
 
 class SetupRound(WaitPage):
-    pass
+    wait_for_all_groups = True
+
+
+    @staticmethod
+    def after_all_players_arrive(subsession):
+        subsession.setup()
 
 
 class Decision(Page):
-    pass
+    form_model = "player"
+
+    @staticmethod
+    def get_form_fields(player):
+        return ["tickets_purchase"]
 
 
 class WaitforDecision(WaitPage):
