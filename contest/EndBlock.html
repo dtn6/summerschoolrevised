@@ -4,6 +4,13 @@
 
 {{ block content }}
 
+{{ for rd in plaeyer.in_all_rounds }}
+<p>
+    Tickets: {{ rd.tickets_purchase }}
+    Other's Tickets: {{ rd.coplayer.tickets_purchased}}
+
+</p>
+
     {{ next_button }}
 {{ endblock }}
 

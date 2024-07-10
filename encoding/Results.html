@@ -1,0 +1,17 @@
+{{ block title }}
+    Results - Round {{ player.round_number }}
+{{ endblock }}
+{{ block content }}
+
+    <p>Your answer: {{ player.entered_code }}</p>
+    <p>Correct code: {{ correct_code }}</p>
+
+    {% if is_correct %}
+        <p>Your answer is correct!</p>
+    {% else %}
+        <p>Your answer is incorrect.</p>
+    {% endif %}
+
+    {{ next_button }}
+
+{{ endblock }}

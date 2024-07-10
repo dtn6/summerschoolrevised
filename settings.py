@@ -20,6 +20,13 @@ SESSION_CONFIGS = [
         app_sequence=[
             "contest"
         ],
+        num_demo_participants=4,
+    ),
+dict(
+        name="encoding",
+        app_sequence=[
+            "encoding"
+        ],
         num_demo_participants=2,
     ),
 ]
